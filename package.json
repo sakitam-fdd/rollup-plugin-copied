@@ -1,0 +1,59 @@
+{
+  "name": "rollup-plugin-copy",
+  "version": "0.0.0",
+  "description": "Copy files && directories with rollup",
+  "main": "dist/index.js",
+  "jsnext:main": "src/index.js",
+  "files": [
+    "src",
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "mocha --compilers js:babel-register",
+    "pretest": "npm run build",
+    "dev": "rollup -wm -c",
+    "build": "rollup -c",
+    "prebuild": "rimraf dist/*",
+    "prepublish": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sakitam-fdd/rollup-plugin-copy.git"
+  },
+  "keywords": [
+    "rollup-plugin",
+    "assets",
+    "copy"
+  ],
+  "author": "FDD <smilefdd@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sakitam-fdd/rollup-plugin-copy/issues"
+  },
+  "homepage": "https://github.com/sakitam-fdd/rollup-plugin-copy#readme",
+  "dependencies": {
+    "mime": "^1.3.4",
+    "rollup-pluginutils": "^2.0.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.16.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "rollup-plugin-eslint": "^4.0.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-register": "^6.4.3",
+    "mocha": "^2.4.5",
+    "rimraf": "^2.5.1",
+    "rollup": "^0.56.5",
+    "rollup-plugin-babel": "^3.0.2"
+  },
+  "peerDependencies": {
+    "rollup": ">=0.56.0"
+  }
+}
