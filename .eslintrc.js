@@ -16,6 +16,7 @@ module.exports = {
   ],
   // add your custom rules here
   'rules': {
+    'escape': 0,
     // allow semi
     'semi': 0,
     // allow new-cap

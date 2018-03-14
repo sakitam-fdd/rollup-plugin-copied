@@ -1,42 +1,55 @@
 import path from 'path'
 import fs from 'fs'
 
-function RollupCopyPlugin (options = {}) {
-  const {
+function copy (options = {}) {
+  let [absoluteFrom, absoluteTo] = ['', '']
+  let {
     from,
     to,
     emitFiles = true
   } = options;
+
+  if (path.isAbsolute(from)) {
+    absoluteFrom = from;
+  } else {
+    absoluteFrom = path.resolve(from);
+  }
+
+  if (path.isAbsolute(to)) {
+    absoluteTo = to;
+  } else {
+    absoluteTo = path.resolve(to);
+  }
+
   return {
+    name: 'copy',
     load (id) {
     },
     onwrite: function write (options) {
       // Allow skipping saving files for server side builds.
-      console.log(from, to, emitFiles)
-      const base = path.dirname(to)
-      const copies = getFileList(from)
-      console.log(base, copies)
-      if (!emitFiles) return
+      const copies = getFileList(from);
+      if (!emitFiles) return;
       return Promise.all((copies).map(name => {
-        return copy(name, path.join(base, name))
+        checkFolderExist(absoluteTo, true);
+        return copyFile(path.join(absoluteFrom, name), path.join(absoluteTo, name))
       }))
     }
   }
 }
 
 /**
- * 获取文件树
+ * get file list
  * @param _path
  * @returns {Array}
  */
 const getFileList = _path => {
-  const result = []
+  const result = [];
   function finder (path_) {
-    let files = fs.readdirSync(path_)
+    let files = fs.readdirSync(path_);
     files.forEach((val, index) => {
-      let fPath = path.join(path_, val)
+      let fPath = path.join(path_, val);
       let stats = fs.statSync(fPath)
-      if (stats.isDirectory()) finder(fPath)
+      if (stats.isDirectory()) finder(fPath);
       if (stats.isFile()) result.push(val)
     })
   }
@@ -45,34 +58,37 @@ const getFileList = _path => {
 };
 
 /**
- * 获取文件扩展名
- * @param _string
- * @returns {*}
+ * check folder exist
+ * @param path
+ * @param mkdir
+ * @returns {boolean}
  */
-// const getFileExt = _string => {
-//   if (_string && _string.split) {
-//     const _arr = _string.split('.');
-//     return _arr[_arr.length - 1]
-//   } else {
-//     return false
-//   }
-// };
+const checkFolderExist = (path, mkdir) => {
+  if (!fs.existsSync(path)) {
+    if (mkdir) {
+      fs.mkdirSync(path);
+    }
+    return false;
+  } else {
+    return true;
+  }
+};
 
-// function promise (fn, ...args) {
-//   return new Promise((resolve, reject) =>
-//     fn(...args, (err, res) =>
-//       err ? reject(err) : resolve(res)))
-// }
-
-function copy (src, dest) {
+/**
+ * copy file to dir
+ * @param src
+ * @param dest
+ * @returns {Promise<any>}
+ */
+function copyFile (src, dest) {
   return new Promise((resolve, reject) => {
-    const read = fs.createReadStream(src)
-    read.on('error', reject)
-    const write = fs.createWriteStream(dest)
-    write.on('error', reject)
-    write.on('finish', resolve)
-    read.pipe(write)
+    const read = fs.createReadStream(src);
+    read.on('error', reject);
+    const write = fs.createWriteStream(dest);
+    write.on('error', reject);
+    write.on('finish', resolve);
+    read.pipe(write);
   })
 }
 
-export default RollupCopyPlugin
+export default copy

@@ -2,7 +2,7 @@ import assert from 'assert'
 import fs from 'fs'
 import rimraf from 'rimraf'
 import {rollup} from 'rollup'
-import RollupCopyPlugin from '../'
+import copy from '../'
 const dest = './dist/index.js'
 
 process.chdir(__dirname)
@@ -25,9 +25,9 @@ function promise(fn, ...args) {
 }
 
 function run(input, publicPath = '', emitFiles = true) {
-  const plugin = RollupCopyPlugin({
+  const plugin = copy({
     from: './fixtures/', // defaults to .svg, .png, .jpg and .gif files
-    to: './dist/images/',
+    to: './dist/images',
     emitFiles: emitFiles // defaults to true
   });
   return rollup({
