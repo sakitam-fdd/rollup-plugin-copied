@@ -22,7 +22,7 @@ function copy (options = {}) {
   }
 
   return {
-    name: 'copy',
+    name: 'copied',
     load (id) {
     },
     onwrite: function write (options) {

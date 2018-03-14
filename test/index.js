@@ -7,7 +7,7 @@ const dest = './dist/index.js'
 
 process.chdir(__dirname)
 
-describe('rollup-plugin-copy', () => {
+describe('rollup-plugin-copied', () => {
   after(() => promise(rimraf, './dist/'))
 
   it('copy file', () =>

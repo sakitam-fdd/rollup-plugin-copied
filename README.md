@@ -1,11 +1,11 @@
-# rollup-plugin-copy
+# rollup-plugin-copied
 
 > Copy files && directories with rollup
 
 ## Install
 
 ```bash
-npm i -D rollup-plugin-copy
+npm i -D rollup-plugin-copied
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm i -D rollup-plugin-copy
 **rollup.config.js**
 
 ```js
-const copy = require('rollup-plugin-copy');
+const copy = require('rollup-plugin-copied');
 
 const plugin = copy({
   from: './fixtures/',

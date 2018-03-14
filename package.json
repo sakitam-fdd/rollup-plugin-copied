@@ -1,5 +1,5 @@
 {
-  "name": "rollup-plugin-copy",
+  "name": "rollup-plugin-copied",
   "version": "0.0.1",
   "description": "Copy files && directories with rollup",
   "main": "dist/index.js",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sakitam-fdd/rollup-plugin-copy.git"
+    "url": "git+https://github.com/sakitam-fdd/rollup-plugin-copied.git"
   },
   "keywords": [
     "rollup-plugin",
@@ -29,9 +29,9 @@
   "author": "FDD <smilefdd@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sakitam-fdd/rollup-plugin-copy/issues"
+    "url": "https://github.com/sakitam-fdd/rollup-plugin-copied/issues"
   },
-  "homepage": "https://github.com/sakitam-fdd/rollup-plugin-copy#README",
+  "homepage": "https://github.com/sakitam-fdd/rollup-plugin-copied#README",
   "dependencies": {
     "rollup-pluginutils": "^2.0.1"
   },
