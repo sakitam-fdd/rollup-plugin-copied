@@ -63,34 +63,6 @@ const getFileList = _path => {
  * @param mkdir
  * @returns {boolean}
  */
-}
-
-/**
- * get file list
- * @param _path
- * @returns {Array}
- */
-const getFileList = _path => {
-  const result = [];
-  function finder (path_) {
-    let files = fs.readdirSync(path_);
-    files.forEach((val, index) => {
-      let fPath = path.join(path_, val);
-      let stats = fs.statSync(fPath)
-      if (stats.isDirectory()) finder(fPath);
-      if (stats.isFile()) result.push(val)
-    })
-  }
-  finder(_path)
-  return result
-};
-
-/**
- * check folder exist
- * @param path
- * @param mkdir
- * @returns {boolean}
- */
 const checkFolderExist = (path, mkdir) => {
   let paths=path.normalize(path).split(path.sep)
   let currentPath=paths[0]
