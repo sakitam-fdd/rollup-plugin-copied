@@ -63,15 +63,20 @@ const getFileList = _path => {
  * @param mkdir
  * @returns {boolean}
  */
-const checkFolderExist = (path, mkdir) => {
-  if (!fs.existsSync(path)) {
-    if (mkdir) {
-      fs.mkdirSync(path);
+const checkFolderExist = (path_, mkdir) => {
+  let paths = path.normalize(path_).split(path.sep);
+  let currentPath = paths[0];
+  let result = true;
+  for (let i = 1, len = paths.length; i < len; i++) {
+    currentPath += path.sep + paths[i];
+    if (!fs.existsSync(currentPath)) {
+      if (mkdir) {
+        fs.mkdirSync(currentPath);
+      }
+      result = false;
     }
-    return false;
-  } else {
-    return true;
   }
+  return result
 };
 
 /**
