@@ -1,38 +1,42 @@
 import path from 'path'
 import fs from 'fs'
+import { createFilter } from 'rollup-pluginutils'
 
-function copy (options = {}) {
-  let [absoluteFrom, absoluteTo] = ['', '']
-  let {
-    from,
-    to,
-    emitFiles = true
-  } = options;
-
-  if (path.isAbsolute(from)) {
-    absoluteFrom = from;
+function copy (patterns, options = {}) {
+  let patterns_ = [];
+  if (!Array.isArray(patterns)) {
+    patterns_.push(patterns)
   } else {
-    absoluteFrom = path.resolve(from);
+    patterns_ = patterns
   }
-
-  if (path.isAbsolute(to)) {
-    absoluteTo = to;
-  } else {
-    absoluteTo = path.resolve(to);
-  }
-
+  const filter = createFilter(options.include, options.exclude);
   return {
     name: 'copied',
     load (id) {
     },
-    onwrite: function write (options) {
-      // Allow skipping saving files for server side builds.
-      const copies = getFileList(from);
-      if (!emitFiles) return;
-      return Promise.all((copies).map(name => {
-        checkFolderExist(absoluteTo, true);
-        return copyFile(path.join(absoluteFrom, name), path.join(absoluteTo, name))
-      }))
+    onwrite: function write () {
+      for (let i = 0; i < patterns_.length; i++) {
+        let [absoluteFrom, absoluteTo] = ['', ''];
+        let {from, to, emitFiles = true} = patterns_[i];
+        if (path.isAbsolute(from)) {
+          absoluteFrom = from;
+        } else {
+          absoluteFrom = path.resolve(from);
+        }
+        if (path.isAbsolute(to)) {
+          absoluteTo = to;
+        } else {
+          absoluteTo = path.resolve(to);
+        }
+        // Allow skipping saving files for server side builds.
+        let copies = getFileList(from);
+        copies = copies.filter(_item => filter(_item));
+        if (!emitFiles) continue;
+        return Promise.all((copies).map(name => {
+          checkFolderExist(absoluteTo, true);
+          return copyFile(path.join(absoluteFrom, name), path.join(absoluteTo, name))
+        }))
+      }
     }
   }
 }
@@ -48,18 +52,18 @@ const getFileList = _path => {
     let files = fs.readdirSync(path_);
     files.forEach((val, index) => {
       let fPath = path.join(path_, val);
-      let stats = fs.statSync(fPath)
+      let stats = fs.statSync(fPath);
       if (stats.isDirectory()) finder(fPath);
       if (stats.isFile()) result.push(val)
     })
   }
-  finder(_path)
+  finder(_path);
   return result
 };
 
 /**
  * check folder exist
- * @param path
+ * @param path_
  * @param mkdir
  * @returns {boolean}
  */
@@ -67,7 +71,7 @@ const checkFolderExist = (path_, mkdir) => {
   let paths = path.normalize(path_).split(path.sep);
   let currentPath = paths[0];
   let result = true;
-  for (let i = 1, len = paths.length; i < len; i++) {
+  for (let i = 1; i < paths.length; i++) {
     currentPath += path.sep + paths[i];
     if (!fs.existsSync(currentPath)) {
       if (mkdir) {
@@ -76,7 +80,7 @@ const checkFolderExist = (path_, mkdir) => {
       result = false;
     }
   }
-  return result
+  return result;
 };
 
 /**

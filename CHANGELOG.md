@@ -4,3 +4,9 @@
 
   * Initial project
   * releases 0.0.1
+
+0.0.2 / 2018-04-20
+
+  * bug: fix cope with nested folders like folder1/folder2where even folder1 did not exist.
+  * new feature: filter support, patterns array support.
+  * releases 0.0.2

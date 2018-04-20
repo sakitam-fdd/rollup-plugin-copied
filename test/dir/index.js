@@ -26,12 +26,12 @@ describe('rollup-plugin-copied', () => {
   it('copy patterns array', (done) => {
     run('./fixtures/index.js', [
       {
-        from: './dir/',
+        from: './fixtures/index.js',
         to: './dist/script',
         emitFiles: true
       },
       {
-        from: './fixtures/',
+        from: './fixtures/png.png',
         to: './dist/images',
         emitFiles: true
       }
