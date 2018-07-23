@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-copied",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Copy files && directories with rollup",
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",

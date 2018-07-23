@@ -107,6 +107,27 @@ describe('rollup-plugin-copied', () => {
       done();
     })
   });
+
+  it('watch', (done) => {
+    run('./fixtures/index.js', {
+      from: './fixtures/',
+      to: './dist/images',
+      emitFiles: true
+    }, {
+      exclude: [],
+      include: [
+        'svg.svg'
+      ],
+      watch: true
+    }).then(() => Promise.all([
+      assertExists(`./dist/images/png.png`, false),
+      assertExists(`./dist/images/svg.svg`, true)
+    ])).then(() => {
+      promise(rimraf, './dist/');
+      done();
+    })
+  });
+
 });
 
 function promise(fn, ...args) {

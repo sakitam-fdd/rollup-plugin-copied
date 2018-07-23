@@ -22,6 +22,8 @@ const plugin = copy({
   from: './fixtures/',
   to: './dist/images',
   emitFiles: true // defaults to true
+}, {
+  watch: true
 });
 
 // or
@@ -32,7 +34,9 @@ const _plugin = copy([
     to: './dist/images',
     emitFiles: true // defaults to true
   }
-]);
+], {
+  watch: true
+});
 
 const config = {
   plugins: [
@@ -67,3 +71,4 @@ const config = {
 | :--: | :--: | :-----: | :---------- |
 | **`'exclude'`** | `{Array}` | `[]` | Array of globs to ignore (applied to from) |
 | **`'include'`** | `{Array}` | `[]` | Array of globs to include (applied to from) |
+| **`'watch'`** | `{Boolean}` | `true` | When set to false, only the changes of the first resource are monitored, and the monitoring is not repeated. |

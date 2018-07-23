@@ -3,6 +3,8 @@ import fs from 'fs'
 import { createFilter } from 'rollup-pluginutils'
 
 function copy (patterns, options = {}) {
+  let copied = false;
+  let { watch = true } = options;
   let patterns_ = [];
   if (!Array.isArray(patterns)) {
     patterns_.push(patterns)
@@ -15,6 +17,7 @@ function copy (patterns, options = {}) {
     load (id) {
     },
     onwrite: function write () {
+      if (!watch && copied) return;
       for (let i = 0; i < patterns_.length; i++) {
         let [absoluteFrom, absoluteTo] = ['', ''];
         let {from, to, emitFiles = true} = patterns_[i];
@@ -37,6 +40,7 @@ function copy (patterns, options = {}) {
           return copyFile(path.join(absoluteFrom, name), path.join(absoluteTo, name))
         }))
       }
+      copied = true;
     }
   }
 }
